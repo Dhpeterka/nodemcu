@@ -47,11 +47,36 @@ def dummy():
 
     return response_template % body
 
-pin = machine.Pin(10, machine.Pin.IN)
+light_pin = machine.Pin(16, machine.Pin.OUT)
+switch_pin = machine.Pin(10, machine.Pin.IN)
+
+def light_on:
+    light_pin.value(1)
+    body='Light is ON!'
+    return response_template % body
+
+def light_off:
+    light_pin.value(0)
+    body='Light is off...'
+    return response_template % body
+
+def switch_stat:
+    body:'{state:' . switch_pin.value(). '}'
+    return response_template % body
+
+adc = machine.ADC(0)
+
+def light_read:
+    body= '{value:' . adc.read() . '}'
+    return response_template % body
 
 handlers = {
     'time': time,
     'dummy': dummy,
+    'light_on': light_on,
+    'light_off': light_off,
+    'switch': switch_stat,
+    'light_read': light_read,
 }
 
 def main():
